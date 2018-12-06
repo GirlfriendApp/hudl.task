@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PortalModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AccountName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentAccountID" Type="int" />
+          <Property Name="AccountTypeID" Type="int" Nullable="false" />
+          <Property Name="LastModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="LastModifiedUser" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="CustomAccount" Type="bit" Nullable="false" />
+          <Property Name="HeadOfficeAccountID" Type="int" />
+        </EntityType>
+        <EntityType Name="LoginAttempts">
+          <Key>
+            <PropertyRef Name="LoginAttemptID" />
+          </Key>
+          <Property Name="LoginAttemptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserAccountID" Type="int" />
+          <Property Name="AttemptedAccount" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="AttemptedEmail" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="UserAgent" Type="varchar" MaxLength="255" />
+          <Property Name="InsertedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Success" Type="bit" Nullable="false" />
+          <Property Name="ImpersonaterId" Type="int" />
+          <Property Name="LockNumber" Type="int" Nullable="false" />
+          <Property Name="LoginResponseCodeID" Type="int" />
+          <Property Name="Invalidated" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SMSCodes">
+          <Key>
+            <PropertyRef Name="UserAccountID" />
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="UserAccountID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="Verifyed" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAccounts">
+          <Key>
+            <PropertyRef Name="UserAccountID" />
+          </Key>
+          <Property Name="UserAccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Salt" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="IsPrimaryUser" Type="bit" Nullable="false" />
+          <Property Name="FailedAttempts" Type="smallint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="LastModifiedUser" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsMsaAdmin" Type="bit" Nullable="false" />
+          <Property Name="Email2Factor" Type="varchar" MaxLength="255" />
+          <Property Name="CompanyPublicPhone" Type="varchar" MaxLength="20" />
+          <Property Name="PhoneIsLandline" Type="bit" />
+          <Property Name="SecurityGroupID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserMachineInfo">
+          <Key>
+            <PropertyRef Name="UserMachineInfoID" />
+          </Key>
+          <Property Name="UserMachineInfoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserAccountID" Type="int" Nullable="false" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="UserAgent" Type="varchar" MaxLength="255" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__SMSCodes__UserAc__28ED12D1">
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="1" />
+          <End Role="SMSCodes" Type="Self.SMSCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccounts">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="SMSCodes">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMachi__UserA__2EA5EC27">
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="1" />
+          <End Role="UserMachineInfo" Type="Self.UserMachineInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccounts">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="UserMachineInfo">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_Accounts">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="0..1" />
+          <End Role="Accounts1" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Accounts1">
+              <PropertyRef Name="ParentAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_Accounts2">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="0..1" />
+          <End Role="Accounts1" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Accounts1">
+              <PropertyRef Name="HeadOfficeAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginAttempts_UserAccounts">
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="0..1" />
+          <End Role="LoginAttempts" Type="Self.LoginAttempts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccounts">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="LoginAttempts">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccounts_Accounts">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PortalModel1StoreContainer">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginAttempts" EntityType="Self.LoginAttempts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMSCodes" EntityType="Self.SMSCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMachineInfo" EntityType="Self.UserMachineInfo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__SMSCodes__UserAc__28ED12D1" Association="Self.FK__SMSCodes__UserAc__28ED12D1">
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+            <End Role="SMSCodes" EntitySet="SMSCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMachi__UserA__2EA5EC27" Association="Self.FK__UserMachi__UserA__2EA5EC27">
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+            <End Role="UserMachineInfo" EntitySet="UserMachineInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_Accounts" Association="Self.FK_Accounts_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Accounts1" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_Accounts2" Association="Self.FK_Accounts_Accounts2">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Accounts1" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginAttempts_UserAccounts" Association="Self.FK_LoginAttempts_UserAccounts">
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+            <End Role="LoginAttempts" EntitySet="LoginAttempts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccounts_Accounts" Association="Self.FK_UserAccounts_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PortalModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AccountName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ParentAccountID" Type="Int32" />
+          <Property Name="AccountTypeID" Type="Int32" Nullable="false" />
+          <Property Name="LastModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="LastModifiedUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="CustomAccount" Type="Boolean" Nullable="false" />
+          <Property Name="HeadOfficeAccountID" Type="Int32" />
+          <NavigationProperty Name="Accounts1" Relationship="Self.FK_Accounts_Accounts" FromRole="Accounts" ToRole="Accounts1" />
+          <NavigationProperty Name="Account1" Relationship="Self.FK_Accounts_Accounts" FromRole="Accounts1" ToRole="Accounts" />
+          <NavigationProperty Name="Accounts11" Relationship="Self.FK_Accounts_Accounts2" FromRole="Accounts" ToRole="Accounts1" />
+          <NavigationProperty Name="Account2" Relationship="Self.FK_Accounts_Accounts2" FromRole="Accounts1" ToRole="Accounts" />
+          <NavigationProperty Name="UserAccounts" Relationship="Self.FK_UserAccounts_Accounts" FromRole="Accounts" ToRole="UserAccounts" />
+        </EntityType>
+        <EntityType Name="LoginAttempt">
+          <Key>
+            <PropertyRef Name="LoginAttemptID" />
+          </Key>
+          <Property Name="LoginAttemptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAccountID" Type="Int32" />
+          <Property Name="AttemptedAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AttemptedEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IPAddress" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserAgent" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InsertedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Success" Type="Boolean" Nullable="false" />
+          <Property Name="ImpersonaterId" Type="Int32" />
+          <Property Name="LockNumber" Type="Int32" Nullable="false" />
+          <Property Name="LoginResponseCodeID" Type="Int32" />
+          <Property Name="Invalidated" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK_LoginAttempts_UserAccounts" FromRole="LoginAttempts" ToRole="UserAccounts" />
+        </EntityType>
+        <EntityType Name="SMSCode">
+          <Key>
+            <PropertyRef Name="UserAccountID" />
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="UserAccountID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Verifyed" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__SMSCodes__UserAc__28ED12D1" FromRole="SMSCodes" ToRole="UserAccounts" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="UserAccountID" />
+          </Key>
+          <Property Name="UserAccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsPrimaryUser" Type="Boolean" Nullable="false" />
+          <Property Name="FailedAttempts" Type="Int16" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="LastModifiedUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsMsaAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="Email2Factor" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyPublicPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneIsLandline" Type="Boolean" />
+          <Property Name="SecurityGroupID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_UserAccounts_Accounts" FromRole="UserAccounts" ToRole="Accounts" />
+          <NavigationProperty Name="LoginAttempts" Relationship="Self.FK_LoginAttempts_UserAccounts" FromRole="UserAccounts" ToRole="LoginAttempts" />
+          <NavigationProperty Name="SMSCodes" Relationship="Self.FK__SMSCodes__UserAc__28ED12D1" FromRole="UserAccounts" ToRole="SMSCodes" />
+          <NavigationProperty Name="UserMachineInfoes" Relationship="Self.FK__UserMachi__UserA__2EA5EC27" FromRole="UserAccounts" ToRole="UserMachineInfo" />
+        </EntityType>
+        <EntityType Name="UserMachineInfo">
+          <Key>
+            <PropertyRef Name="UserMachineInfoID" />
+          </Key>
+          <Property Name="UserMachineInfoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAccountID" Type="Int32" Nullable="false" />
+          <Property Name="IPAddress" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserAgent" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__UserMachi__UserA__2EA5EC27" FromRole="UserMachineInfo" ToRole="UserAccounts" />
+        </EntityType>
+        <Association Name="FK_Accounts_Accounts">
+          <End Role="Accounts" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Accounts1" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Accounts1">
+              <PropertyRef Name="ParentAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Accounts_Accounts2">
+          <End Role="Accounts" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Accounts1" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Accounts1">
+              <PropertyRef Name="HeadOfficeAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccounts_Accounts">
+          <End Role="Accounts" Type="Self.Account" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginAttempts_UserAccounts">
+          <End Role="UserAccounts" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="LoginAttempts" Type="Self.LoginAttempt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccounts">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="LoginAttempts">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSCodes__UserAc__28ED12D1">
+          <End Role="UserAccounts" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="SMSCodes" Type="Self.SMSCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccounts">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="SMSCodes">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMachi__UserA__2EA5EC27">
+          <End Role="UserAccounts" Type="Self.UserAccount" Multiplicity="1" />
+          <End Role="UserMachineInfo" Type="Self.UserMachineInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccounts">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="UserMachineInfo">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PortalEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="LoginAttempts" EntityType="Self.LoginAttempt" />
+          <EntitySet Name="SMSCodes" EntityType="Self.SMSCode" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+          <EntitySet Name="UserMachineInfoes" EntityType="Self.UserMachineInfo" />
+          <AssociationSet Name="FK_Accounts_Accounts" Association="Self.FK_Accounts_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Accounts1" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Accounts_Accounts2" Association="Self.FK_Accounts_Accounts2">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Accounts1" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccounts_Accounts" Association="Self.FK_UserAccounts_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginAttempts_UserAccounts" Association="Self.FK_LoginAttempts_UserAccounts">
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+            <End Role="LoginAttempts" EntitySet="LoginAttempts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSCodes__UserAc__28ED12D1" Association="Self.FK__SMSCodes__UserAc__28ED12D1">
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+            <End Role="SMSCodes" EntitySet="SMSCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMachi__UserA__2EA5EC27" Association="Self.FK__UserMachi__UserA__2EA5EC27">
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+            <End Role="UserMachineInfo" EntitySet="UserMachineInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PortalModel1StoreContainer" CdmEntityContainer="PortalEntities2">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="PortalModel1.Account">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="ParentAccountID" ColumnName="ParentAccountID" />
+                <ScalarProperty Name="AccountTypeID" ColumnName="AccountTypeID" />
+                <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+                <ScalarProperty Name="LastModifiedUser" ColumnName="LastModifiedUser" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CustomAccount" ColumnName="CustomAccount" />
+                <ScalarProperty Name="HeadOfficeAccountID" ColumnName="HeadOfficeAccountID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginAttempts">
+            <EntityTypeMapping TypeName="PortalModel1.LoginAttempt">
+              <MappingFragment StoreEntitySet="LoginAttempts">
+                <ScalarProperty Name="LoginAttemptID" ColumnName="LoginAttemptID" />
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="AttemptedAccount" ColumnName="AttemptedAccount" />
+                <ScalarProperty Name="AttemptedEmail" ColumnName="AttemptedEmail" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
+                <ScalarProperty Name="InsertedDate" ColumnName="InsertedDate" />
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="ImpersonaterId" ColumnName="ImpersonaterId" />
+                <ScalarProperty Name="LockNumber" ColumnName="LockNumber" />
+                <ScalarProperty Name="LoginResponseCodeID" ColumnName="LoginResponseCodeID" />
+                <ScalarProperty Name="Invalidated" ColumnName="Invalidated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMSCodes">
+            <EntityTypeMapping TypeName="PortalModel1.SMSCode">
+              <MappingFragment StoreEntitySet="SMSCodes">
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Verifyed" ColumnName="Verifyed" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAccounts">
+            <EntityTypeMapping TypeName="PortalModel1.UserAccount">
+              <MappingFragment StoreEntitySet="UserAccounts">
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="IsPrimaryUser" ColumnName="IsPrimaryUser" />
+                <ScalarProperty Name="FailedAttempts" ColumnName="FailedAttempts" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+                <ScalarProperty Name="LastModifiedUser" ColumnName="LastModifiedUser" />
+                <ScalarProperty Name="IsMsaAdmin" ColumnName="IsMsaAdmin" />
+                <ScalarProperty Name="Email2Factor" ColumnName="Email2Factor" />
+                <ScalarProperty Name="CompanyPublicPhone" ColumnName="CompanyPublicPhone" />
+                <ScalarProperty Name="PhoneIsLandline" ColumnName="PhoneIsLandline" />
+                <ScalarProperty Name="SecurityGroupID" ColumnName="SecurityGroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMachineInfoes">
+            <EntityTypeMapping TypeName="PortalModel1.UserMachineInfo">
+              <MappingFragment StoreEntitySet="UserMachineInfo">
+                <ScalarProperty Name="UserMachineInfoID" ColumnName="UserMachineInfoID" />
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="UserAgent" ColumnName="UserAgent" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

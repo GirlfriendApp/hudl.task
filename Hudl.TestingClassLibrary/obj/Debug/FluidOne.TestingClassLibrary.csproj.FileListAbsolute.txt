@@ -1,0 +1,6 @@
+C:\TFS_Source\FluidOne\Standalone\Main Dev\FluidoneClientTesting\FluidoneClientTesting\FluidOne.TestingClassLibrary\bin\Debug\FluidOne.TestingClassLibrary.dll
+C:\TFS_Source\FluidOne\Standalone\Main Dev\FluidoneClientTesting\FluidoneClientTesting\FluidOne.TestingClassLibrary\bin\Debug\FluidOne.TestingClassLibrary.pdb
+C:\TFS_Source\FluidOne\Standalone\Main Dev\FluidoneClientTesting\FluidoneClientTesting\FluidOne.TestingClassLibrary\obj\Debug\FluidOne.TestingClassLibrary.csproj.CoreCompileInputs.cache
+C:\TFS_Source\FluidOne\Standalone\Main Dev\FluidoneClientTesting\FluidoneClientTesting\FluidOne.TestingClassLibrary\obj\Debug\FluidOne.TestingClassLibrary.dll
+C:\TFS_Source\FluidOne\Standalone\Main Dev\FluidoneClientTesting\FluidoneClientTesting\FluidOne.TestingClassLibrary\obj\Debug\FluidOne.TestingClassLibrary.pdb
+C:\TFS_Source\FluidOne\Standalone\Main Dev\FluidoneClientTesting\FluidoneClientTesting\FluidOne.TestingClassLibrary\obj\Debug\FluidOne.TestingClassLibrary.csprojAssemblyReference.cache

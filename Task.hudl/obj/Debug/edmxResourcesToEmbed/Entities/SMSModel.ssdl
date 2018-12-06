@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PortalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Accounts">
+    <Key>
+      <PropertyRef Name="AccountID" />
+    </Key>
+    <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountCode" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="AccountName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ParentAccountID" Type="int" />
+    <Property Name="AccountTypeID" Type="int" Nullable="false" />
+    <Property Name="LastModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="LastModifiedUser" Type="varchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SMSCodes">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="UserAccountID" Type="int" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="Verifyed" Type="bit" Nullable="false" />
+    <Property Name="Created" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserAccounts">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+    </Key>
+    <Property Name="UserAccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountID" Type="int" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Salt" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Enabled" Type="bit" Nullable="false" />
+    <Property Name="Deleted" Type="bit" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" />
+    <Property Name="IsPrimaryUser" Type="bit" Nullable="false" />
+    <Property Name="FailedAttempts" Type="smallint" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="LastModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="LastModifiedUser" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="IsMsaAdmin" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserMachineInfo">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+    </Key>
+    <Property Name="UserAccountID" Type="int" Nullable="false" />
+    <Property Name="IPAddress" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="UserAgent" Type="varchar" MaxLength="255" />
+    <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__SMSCodes__UserAc__5E8A0973">
+    <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="1" />
+    <End Role="SMSCodes" Type="Self.SMSCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccounts">
+        <PropertyRef Name="UserAccountID" />
+      </Principal>
+      <Dependent Role="SMSCodes">
+        <PropertyRef Name="UserAccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserMachi__UserA__70A8B9AE">
+    <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="1" />
+    <End Role="UserMachineInfo" Type="Self.UserMachineInfo" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccounts">
+        <PropertyRef Name="UserAccountID" />
+      </Principal>
+      <Dependent Role="UserMachineInfo">
+        <PropertyRef Name="UserAccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Accounts_Accounts">
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="0..1" />
+    <End Role="Accounts1" Type="Self.Accounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accounts">
+        <PropertyRef Name="AccountID" />
+      </Principal>
+      <Dependent Role="Accounts1">
+        <PropertyRef Name="ParentAccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserAccounts_Accounts">
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+    <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accounts">
+        <PropertyRef Name="AccountID" />
+      </Principal>
+      <Dependent Role="UserAccounts">
+        <PropertyRef Name="AccountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PortalModelStoreContainer">
+    <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SMSCodes" EntityType="Self.SMSCodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserAccounts" EntityType="Self.UserAccounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMachineInfo" EntityType="Self.UserMachineInfo" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__SMSCodes__UserAc__5E8A0973" Association="Self.FK__SMSCodes__UserAc__5E8A0973">
+      <End Role="UserAccounts" EntitySet="UserAccounts" />
+      <End Role="SMSCodes" EntitySet="SMSCodes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserMachi__UserA__70A8B9AE" Association="Self.FK__UserMachi__UserA__70A8B9AE">
+      <End Role="UserAccounts" EntitySet="UserAccounts" />
+      <End Role="UserMachineInfo" EntitySet="UserMachineInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Accounts_Accounts" Association="Self.FK_Accounts_Accounts">
+      <End Role="Accounts" EntitySet="Accounts" />
+      <End Role="Accounts1" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserAccounts_Accounts" Association="Self.FK_UserAccounts_Accounts">
+      <End Role="Accounts" EntitySet="Accounts" />
+      <End Role="UserAccounts" EntitySet="UserAccounts" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

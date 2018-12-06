@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="364f70feba764bfa81720ce3794d7e8d" Name="Diagram1">
+        <EntityTypeShape EntityType="PortalModel.SMSCode" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PortalModel.UserAccount" Width="1.5" PointX="4.75" PointY="0.625" />
+        <EntityTypeShape EntityType="PortalModel.UserMachineInfo" Width="1.5" PointX="3" PointY="5" />
+        <AssociationConnector Association="PortalModel.FK__SMSCodes__UserAc__5E8A0973" />
+        <AssociationConnector Association="PortalModel.FK__UserMachi__UserA__70A8B9AE" />
+        <EntityTypeShape EntityType="PortalModel.Account" Width="1.5" PointX="2.5" PointY="8.5" />
+        <AssociationConnector Association="PortalModel.FK_Accounts_Accounts" />
+        <AssociationConnector Association="PortalModel.FK_UserAccounts_Accounts" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
